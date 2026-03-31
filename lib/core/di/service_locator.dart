@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../database/database_service.dart';
 
 final sl = GetIt.instance;
 
@@ -9,5 +10,10 @@ Future<void> init() async {
     () => const FlutterSecureStorage(),
   );
 
-  // سيتم إضافة تهيئة قاعدة البيانات والـ Repositories والـ Blocs تباعاً في الخطوات القادمة
+  // ! Core - Local Database
+  final databaseService = DatabaseService();
+  await databaseService.database; // التأكد من تهيئة الجداول عند بدء التطبيق
+  sl.registerLazySingleton<DatabaseService>(() => databaseService);
+
+  // سيتم إضافة الـ Repositories والـ Blocs هنا في الخطوات القادمة
 }
