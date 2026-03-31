@@ -20,8 +20,8 @@ class LicenseScreen extends StatelessWidget {
           child: BlocConsumer<LicenseBloc, LicenseState>(
             listener: (context, state) {
               if (state is LicenseValid) {
-                // الانتقال إلى الشاشة الرئيسية عند نجاح التفعيل
-                context.go('/home');
+                // الانتقال إلى الشاشة login عند نجاح التفعيل
+                context.go('/login');
               } else if (state is LicenseError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -52,95 +52,98 @@ class LicenseScreen extends StatelessWidget {
   Widget _buildActivationForm(BuildContext context, String deviceId) {
     final TextEditingController keyController = TextEditingController();
 
-    return Container(
-      width: 600,
-      padding: const EdgeInsets.all(40.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 5)
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.security, size: 80, color: Color(0xFF1E88E5)),
-          const SizedBox(height: 20),
-          const Text(
-            'تفعيل نظام نقطة البيع',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'التطبيق غير مفعل حالياً. يرجى تزويدنا بالمعرف التالي لإصدار رخصة التشغيل.',
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 30),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey.shade300),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Container(
+        width: 600,
+        padding: const EdgeInsets.all(40.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(color: Colors.black12, blurRadius: 20, spreadRadius: 5)
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.security, size: 80, color: Color(0xFF1E88E5)),
+            const SizedBox(height: 20),
+            const Text(
+              'تفعيل نظام نقطة البيع',
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: SelectableText(
-                    'Device ID: $deviceId',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold, 
-                      fontSize: 16, 
-                      fontFamily: 'monospace',
+            const SizedBox(height: 10),
+            const Text(
+              'التطبيق غير مفعل حالياً. يرجى تزويدنا بالمعرف التالي لإصدار رخصة التشغيل.',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SelectableText(
+                      'Device ID: $deviceId',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold, 
+                        fontSize: 16, 
+                        fontFamily: 'monospace',
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.copy, color: Color(0xFF1E88E5)),
-                  tooltip: 'نسخ المعرف',
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: deviceId));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('تم نسخ معرف الجهاز بنجاح!')),
-                    );
-                  },
-                )
-              ],
-            ),
-          ),
-          const SizedBox(height: 30),
-          TextField(
-            controller: keyController,
-            decoration: const InputDecoration(
-              labelText: 'مفتاح الترخيص (License Key)',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.vpn_key),
-            ),
-            maxLines: 4,
-          ),
-          const SizedBox(height: 30),
-          SizedBox(
-            width: double.infinity,
-            height: 55,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1E88E5),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                  IconButton(
+                    icon: const Icon(Icons.copy, color: Color(0xFF1E88E5)),
+                    tooltip: 'نسخ المعرف',
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: deviceId));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('تم نسخ معرف الجهاز بنجاح!')),
+                      );
+                    },
+                  )
+                ],
               ),
-              onPressed: () {
-                final String key = keyController.text.trim();
-                if (key.isNotEmpty) {
-                  context.read<LicenseBloc>().add(ActivateLicenseEvent(licenseKey: key));
-                }
-              },
-              child: const Text('تفعيل النظام الآن', style: TextStyle(fontSize: 20)),
             ),
-          )
-        ],
+            const SizedBox(height: 30),
+            TextField(
+              controller: keyController,
+              decoration: const InputDecoration(
+                labelText: 'مفتاح الترخيص (License Key)',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.vpn_key),
+              ),
+              maxLines: 4,
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1E88E5),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  final String key = keyController.text.trim();
+                  if (key.isNotEmpty) {
+                    context.read<LicenseBloc>().add(ActivateLicenseEvent(licenseKey: key));
+                  }
+                },
+                child: const Text('تفعيل النظام الآن', style: TextStyle(fontSize: 20)),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
