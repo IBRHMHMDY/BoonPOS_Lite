@@ -27,7 +27,7 @@ import '../../features/shift/domain/usecases/open_shift.dart';
 import '../../features/shift/presentation/bloc/shift_bloc.dart';
 
 // ==========================================
-// استيرادات المنيو (Menu Imports) - ضعها في الأعلى
+// Menu Feature
 // ==========================================
 import '../../features/menu/domain/repositories/menu_repository.dart';
 import '../../features/menu/domain/usecases/get_categories.dart';
@@ -45,6 +45,14 @@ import '../../features/menu/data/datasources/menu_local_data_source_impl.dart';
 import '../../features/menu/presentation/bloc/category/category_bloc.dart';
 import '../../features/menu/presentation/bloc/product/product_bloc.dart';
 import '../../features/menu/presentation/bloc/modifier/modifier_bloc.dart';
+// POS
+import '../../features/pos/domain/repositories/pos_repository.dart';
+import '../../features/pos/data/repositories/pos_repository_impl.dart';
+import '../../features/pos/data/datasources/pos_local_data_source.dart';
+import '../../features/pos/data/datasources/pos_local_data_source_impl.dart';
+import '../../features/pos/domain/usecases/get_next_order_number.dart';
+import '../../features/pos/domain/usecases/save_order.dart';
+
 
 final sl = GetIt.instance;
 
@@ -150,4 +158,19 @@ Future<void> init() async {
     saveModifier: sl(),
     deleteModifier: sl(),
   ));
+
+  // ! Features - POS Engine
+  // DataSource
+  sl.registerLazySingleton<PosLocalDataSource>(
+    () => PosLocalDataSourceImpl(databaseService: sl()),
+  );
+
+  // Repository
+  sl.registerLazySingleton<PosRepository>(
+    () => PosRepositoryImpl(localDataSource: sl()),
+  );
+
+  // UseCases
+  sl.registerLazySingleton(() => GetNextOrderNumberUseCase(sl()));
+  sl.registerLazySingleton(() => SaveOrderUseCase(sl()));
 }
