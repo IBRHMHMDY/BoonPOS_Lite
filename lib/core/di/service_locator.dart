@@ -26,6 +26,24 @@ import '../../features/shift/domain/usecases/get_active_shift.dart';
 import '../../features/shift/domain/usecases/open_shift.dart';
 import '../../features/shift/presentation/bloc/shift_bloc.dart';
 
+// ==========================================
+// استيرادات المنيو (Menu Imports) - ضعها في الأعلى
+// ==========================================
+import '../../features/menu/domain/repositories/menu_repository.dart';
+import '../../features/menu/domain/usecases/get_categories.dart';
+import '../../features/menu/domain/usecases/save_category.dart';
+import '../../features/menu/domain/usecases/delete_category.dart';
+import '../../features/menu/domain/usecases/get_products.dart';
+import '../../features/menu/domain/usecases/save_product.dart';
+import '../../features/menu/domain/usecases/delete_product.dart';
+import '../../features/menu/domain/usecases/get_modifiers.dart';
+import '../../features/menu/domain/usecases/save_modifier.dart';
+import '../../features/menu/domain/usecases/delete_modifier.dart';
+import '../../features/menu/data/repositories/menu_repository_impl.dart';
+import '../../features/menu/data/datasources/menu_local_data_source.dart';
+import '../../features/menu/data/datasources/menu_local_data_source_impl.dart';
+
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -87,4 +105,29 @@ Future<void> init() async {
     getActiveShift: sl(),
     openShift: sl(),
   ));
+
+
+  // ! Features - Menu
+  sl.registerLazySingleton<MenuLocalDataSource>(
+    () => MenuLocalDataSourceImpl(databaseService: sl()),
+  );
+  // Repository
+  sl.registerLazySingleton<MenuRepository>(
+    () => MenuRepositoryImpl(localDataSource: sl()),
+  );
+  
+  // UseCases - Categories
+  sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
+  sl.registerLazySingleton(() => SaveCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteCategoryUseCase(sl()));
+  
+  // UseCases - Products
+  sl.registerLazySingleton(() => GetProductsUseCase(sl()));
+  sl.registerLazySingleton(() => SaveProductUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteProductUseCase(sl()));
+  
+  // UseCases - Modifiers
+  sl.registerLazySingleton(() => GetModifiersUseCase(sl()));
+  sl.registerLazySingleton(() => SaveModifierUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteModifierUseCase(sl()));
 }
