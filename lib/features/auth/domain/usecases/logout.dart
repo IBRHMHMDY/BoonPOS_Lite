@@ -1,4 +1,4 @@
-import '../../../../core/usecases/usecases.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../repositories/auth_repository.dart';
 
 class LogoutUseCase implements UseCase<void, NoParams> {

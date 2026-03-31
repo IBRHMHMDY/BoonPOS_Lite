@@ -1,13 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/repositories/license_repository.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/device_helper.dart';
+import '../../domain/usecases/activate_license.dart';
+import '../../domain/usecases/check_license.dart';
 import 'license_event.dart';
 import 'license_state.dart';
 
 class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
-  final LicenseRepository repository;
+  final CheckLicenseUseCase checkLicense;
+  final ActivateLicenseUseCase activateLicense;
 
-  LicenseBloc({required this.repository}) : super(LicenseInitial()) {
+  LicenseBloc({
+    required this.checkLicense,
+    required this.activateLicense,
+  }) : super(LicenseInitial()) {
     on<CheckLicenseEvent>(_onCheckLicense);
     on<ActivateLicenseEvent>(_onActivateLicense);
   }
@@ -15,7 +21,8 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
   Future<void> _onCheckLicense(CheckLicenseEvent event, Emitter<LicenseState> emit) async {
     emit(LicenseLoading());
     try {
-      final bool isValid = await repository.isLicenseValid();
+      // استخدام الـ UseCase بدلاً من الـ Repository
+      final bool isValid = await checkLicense(NoParams());
       if (isValid) {
         emit(LicenseValid());
       } else {
@@ -30,7 +37,8 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
   Future<void> _onActivateLicense(ActivateLicenseEvent event, Emitter<LicenseState> emit) async {
     emit(LicenseLoading());
     try {
-      final bool success = await repository.activateLicense(event.licenseKey);
+      // استخدام الـ UseCase
+      final bool success = await activateLicense(event.licenseKey);
       if (success) {
         emit(LicenseValid());
       } else {

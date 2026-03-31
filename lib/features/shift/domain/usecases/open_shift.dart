@@ -1,4 +1,4 @@
-import 'package:boon_pos_lite/core/usecases/usecases.dart';
+import 'package:boon_pos_lite/core/usecases/usecase.dart';
 import 'package:equatable/equatable.dart';
 import '../entities/shift_entity.dart';
 import '../repositories/shift_repository.dart';

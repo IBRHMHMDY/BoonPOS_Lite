@@ -1,4 +1,4 @@
-import 'package:boon_pos_lite/core/usecases/usecases.dart';
+import 'package:boon_pos_lite/core/usecases/usecase.dart';
 
 import '../repositories/license_repository.dart';
 
