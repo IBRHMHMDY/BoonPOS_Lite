@@ -42,7 +42,9 @@ import '../../features/menu/domain/usecases/delete_modifier.dart';
 import '../../features/menu/data/repositories/menu_repository_impl.dart';
 import '../../features/menu/data/datasources/menu_local_data_source.dart';
 import '../../features/menu/data/datasources/menu_local_data_source_impl.dart';
-
+import '../../features/menu/presentation/bloc/category/category_bloc.dart';
+import '../../features/menu/presentation/bloc/product/product_bloc.dart';
+import '../../features/menu/presentation/bloc/modifier/modifier_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -130,4 +132,22 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetModifiersUseCase(sl()));
   sl.registerLazySingleton(() => SaveModifierUseCase(sl()));
   sl.registerLazySingleton(() => DeleteModifierUseCase(sl()));
+  // Blocs - Menu
+  sl.registerFactory(() => CategoryBloc(
+    getCategories: sl(),
+    saveCategory: sl(),
+    deleteCategory: sl(),
+  ));
+
+  sl.registerFactory(() => ProductBloc(
+    getProducts: sl(),
+    saveProduct: sl(),
+    deleteProduct: sl(),
+  ));
+
+  sl.registerFactory(() => ModifierBloc(
+    getModifiers: sl(),
+    saveModifier: sl(),
+    deleteModifier: sl(),
+  ));
 }
