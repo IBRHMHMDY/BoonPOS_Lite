@@ -52,7 +52,8 @@ import '../../features/pos/data/datasources/pos_local_data_source.dart';
 import '../../features/pos/data/datasources/pos_local_data_source_impl.dart';
 import '../../features/pos/domain/usecases/get_next_order_number.dart';
 import '../../features/pos/domain/usecases/save_order.dart';
-
+import '../../features/pos/presentation/bloc/cart/cart_bloc.dart';
+import '../../features/pos/presentation/bloc/checkout/checkout_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -173,4 +174,12 @@ Future<void> init() async {
   // UseCases
   sl.registerLazySingleton(() => GetNextOrderNumberUseCase(sl()));
   sl.registerLazySingleton(() => SaveOrderUseCase(sl()));
+
+  // Blocs
+  sl.registerFactory(() => CartBloc());
+  
+  sl.registerFactory(() => CheckoutBloc(
+    getNextOrderNumber: sl(),
+    saveOrder: sl(),
+  ));
 }
