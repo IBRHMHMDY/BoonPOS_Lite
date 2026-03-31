@@ -1,11 +1,13 @@
 import 'package:boon_pos_lite/core/database/database_service.dart';
 import 'package:boon_pos_lite/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:boon_pos_lite/features/auth/domain/repositories/auth_repository.dart';
+import 'package:boon_pos_lite/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:boon_pos_lite/features/license/data/repositories/license_repository_impl.dart';
 import 'package:boon_pos_lite/features/license/domain/repositories/license_repository.dart';
 import 'package:boon_pos_lite/features/license/presentation/bloc/license_bloc.dart';
 import 'package:boon_pos_lite/features/shift/data/repositories/shift_repository_impl.dart';
 import 'package:boon_pos_lite/features/shift/domain/repositories/shift_repository.dart';
+import 'package:boon_pos_lite/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -33,10 +35,13 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(databaseService: sl(), secureStorage: sl()),
   );
+  sl.registerFactory(() => AuthBloc(repository: sl()));
 
   // ! Features - Shift
   sl.registerLazySingleton<ShiftRepository>(
     () => ShiftRepositoryImpl(databaseService: sl()),
   );
+  sl.registerFactory(() => ShiftBloc(repository: sl()));
+
   // سيتم إضافة الـ Repositories والـ Blocs هنا في الخطوات القادمة
 }
