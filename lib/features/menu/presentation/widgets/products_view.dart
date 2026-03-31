@@ -48,7 +48,7 @@ class _ProductsViewState extends State<ProductsView> {
       barrierDismissible: false,
       builder: (dialogContext) {
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (stateContext, setState) {
             return AlertDialog(
               title: Text(isEditing ? 'تعديل المنتج' : 'إضافة منتج جديد'),
               content: SingleChildScrollView(
@@ -279,10 +279,8 @@ class _ProductsViewState extends State<ProductsView> {
                             itemBuilder: (context, index) {
                               final product = products[index];
                               // البحث عن اسم التصنيف لعرضه
-                              final catName = activeCategories.firstWhere(
-                                (c) => c.id == product.categoryId, 
-                                orElse: () => const CategoryEntity(id: 0, name: 'غير معروف', sortOrder: 0, isActive: 0),
-                              ).name;
+                              final catIndex = activeCategories.indexWhere((c) => c.id == product.categoryId);
+                              final catName = catIndex != -1 ? activeCategories[catIndex].name : 'غير معروف';
 
                               return Card(
                                 elevation: 2,

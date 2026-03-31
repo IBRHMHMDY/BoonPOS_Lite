@@ -31,7 +31,7 @@ class _CategoriesViewState extends State<CategoriesView> {
       barrierDismissible: false,
       builder: (dialogContext) {
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (stateContext, setState) {
             return AlertDialog(
               title: Text(isEditing ? 'تعديل التصنيف' : 'إضافة تصنيف جديد'),
               content: SingleChildScrollView(

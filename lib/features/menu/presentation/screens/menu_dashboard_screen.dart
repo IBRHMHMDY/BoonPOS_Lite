@@ -4,22 +4,21 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/di/service_locator.dart';
 import '../bloc/category/category_bloc.dart';
 import '../bloc/product/product_bloc.dart';
-// import '../bloc/modifier/modifier_bloc.dart'; // سيتم تفعيله في الخطوة القادمة
+import '../bloc/modifier/modifier_bloc.dart';
 import '../widgets/categories_view.dart';
 import '../widgets/products_view.dart';
-// import '../widgets/modifiers_view.dart'; // سيتم تفعيله في الخطوة القادمة
+import '../widgets/modifiers_view.dart';
 
 class MenuDashboardScreen extends StatelessWidget {
   const MenuDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // استخدام MultiBlocProvider لتوفير جميع Blocs المنيو للشاشات الفرعية
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => sl<CategoryBloc>()),
         BlocProvider(create: (context) => sl<ProductBloc>()),
-        // BlocProvider(create: (context) => sl<ModifierBloc>()), // سيتم تفعيله في الخطوة القادمة
+        BlocProvider(create: (context) => sl<ModifierBloc>()),
       ],
       child: DefaultTabController(
         length: 3,
@@ -44,8 +43,8 @@ class MenuDashboardScreen extends StatelessWidget {
           body: const TabBarView(
             children: [
               CategoriesView(),
-              ProductsView(), // تم التفعيل
-              Center(child: Text('جاري بناء واجهة الإضافات...')), // مؤقت للخطوة القادمة
+              ProductsView(),
+              ModifiersView(),
             ],
           ),
         ),
