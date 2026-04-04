@@ -11,7 +11,7 @@ import '../../features/shift/presentation/bloc/shift_bloc.dart';
 import '../di/service_locator.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/menu', 
+  initialLocation: '/license', 
   routes: [
     GoRoute(
       path: '/license',

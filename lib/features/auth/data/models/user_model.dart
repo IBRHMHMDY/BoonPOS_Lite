@@ -11,21 +11,24 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'],
-      name: map['name'],
-      pinCode: map['pin_code'],
-      role: map['role'],
-      isActive: map['is_active'],
+      id: map['id'] as int,
+      name: map['name'] as String,
+      pinCode: map['pin_code'] as String,
+      role: map['role'] as String,
+      isActive: map['is_active'] as int,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
+    final map = <String, dynamic>{
       'name': name,
       'pin_code': pinCode,
       'role': role,
       'is_active': isActive,
     };
+    if (id != 0) {
+      map['id'] = id;
+    }
+    return map;
   }
 }

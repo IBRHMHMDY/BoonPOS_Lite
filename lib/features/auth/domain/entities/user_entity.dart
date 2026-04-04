@@ -4,7 +4,7 @@ class UserEntity extends Equatable {
   final int id;
   final String name;
   final String pinCode;
-  final String role;
+  final String role; // 'admin' or 'cashier'
   final int isActive;
 
   const UserEntity({
@@ -15,7 +15,7 @@ class UserEntity extends Equatable {
     required this.isActive,
   });
 
-  // مساعدة برمجية (Helper) لمعرفة إذا كان المستخدم مديراً
+  bool get active => isActive == 1;
   bool get isAdmin => role == 'admin';
 
   @override

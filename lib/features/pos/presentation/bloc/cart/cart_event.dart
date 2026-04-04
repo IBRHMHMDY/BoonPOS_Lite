@@ -11,10 +11,17 @@ abstract class CartEvent extends Equatable {
 
 class AddProductToCartEvent extends CartEvent {
   final ProductEntity product;
-  const AddProductToCartEvent({required this.product});
+  final List<ModifierEntity> modifiers; // تمت إضافة هذا الحقل
+  final double quantity; // لدعم إضافة أكثر من قطعة مرة واحدة
+
+  const AddProductToCartEvent({
+    required this.product, 
+    this.modifiers = const [],
+    this.quantity = 1.0,
+  });
 
   @override
-  List<Object?> get props => [product];
+  List<Object?> get props => [product, modifiers, quantity];
 }
 
 class RemoveItemFromCartEvent extends CartEvent {
@@ -32,40 +39,6 @@ class UpdateItemQuantityEvent extends CartEvent {
 
   @override
   List<Object?> get props => [cartItemId, quantity];
-}
-
-class AddModifierToItemEvent extends CartEvent {
-  final String cartItemId;
-  final ModifierEntity modifier;
-  const AddModifierToItemEvent({required this.cartItemId, required this.modifier});
-
-  @override
-  List<Object?> get props => [cartItemId, modifier];
-}
-
-class RemoveModifierFromItemEvent extends CartEvent {
-  final String cartItemId;
-  final ModifierEntity modifier;
-  const RemoveModifierFromItemEvent({required this.cartItemId, required this.modifier});
-
-  @override
-  List<Object?> get props => [cartItemId, modifier];
-}
-
-class ApplyDiscountEvent extends CartEvent {
-  final double discountAmount;
-  const ApplyDiscountEvent({required this.discountAmount});
-
-  @override
-  List<Object?> get props => [discountAmount];
-}
-
-class ApplyTaxEvent extends CartEvent {
-  final double taxAmount;
-  const ApplyTaxEvent({required this.taxAmount});
-
-  @override
-  List<Object?> get props => [taxAmount];
 }
 
 class ClearCartEvent extends CartEvent {}

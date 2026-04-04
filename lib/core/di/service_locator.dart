@@ -1,3 +1,4 @@
+import 'package:boon_pos_lite/features/auth/presentation/bloc/user/user_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -18,6 +19,9 @@ import '../../features/auth/domain/usecases/get_current_user.dart';
 import '../../features/auth/domain/usecases/login_with_pin.dart';
 import '../../features/auth/domain/usecases/logout.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/domain/usecases/get_users.dart';
+import '../../features/auth/domain/usecases/save_user.dart';
+import '../../features/auth/domain/usecases/delete_user.dart';
 
 // Shift Feature
 import '../../features/shift/domain/repositories/shift_repository.dart';
@@ -100,7 +104,15 @@ Future<void> init() async {
     loginWithPin: sl(),
     logout: sl(),
   ));
-
+  sl.registerFactory(() => UserBloc(
+    getUsers: sl(),
+    saveUser: sl(),
+    deleteUser: sl(),
+  ));
+  sl.registerLazySingleton(() => GetUsersUseCase(sl()));
+  sl.registerLazySingleton(() => SaveUserUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteUserUseCase(sl()));
+  
   // ==========================================
   // ! Features - Shift
   // ==========================================
